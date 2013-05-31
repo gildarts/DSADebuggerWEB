@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DSA Server</title>
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <!--dsutil-->
+        <script src="js/xmlWriter.js"></script>
+        <script src="js/xml2json.js"></script>
+        <script src="js/parseXml.js"></script>
+        <script src="js/dsnsLookup.js"></script>
+        <script src="js/dsutil.js"></script>
+        <!-- DSA Server Manager Core -->
+        <script src="js/dsadal.js"></script>
+        <script src="js/dsamanager.js"></script>
+        <script src="js/default.js"></script>
+        <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+        <style type="text/css">
+            body {
+                padding-top: 40px;
+                padding-bottom: 40px;
+                background-color: #f5f5f5;
+            }
+
+            .form-signin {
+                max-width: 300px;
+                padding: 19px 29px 29px;
+                margin: 0 auto 20px;
+                background-color: #fff;
+                border: 1px solid #e5e5e5;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+                -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+                box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+            }
+
+            .form-signin .form-signin-heading, .form-signin .checkbox {
+                margin-bottom: 10px;
+            }
+
+            .form-signin input[type="text"], .form-signin input[type="password"] {
+                font-size: 16px;
+                height: auto;
+                margin-bottom: 15px;
+                padding: 7px 9px;
+            }
+        </style>
+    </head>
+
+    <body style="background-color: white">
+        <div class="container-fluid">
+            <div class="page-header">
+                <h1>DSA Server 診斷介面</h1>
+            </div>
+        </div>
+
+        <div class="container-fluid hide" id="main">
+            <div class="row-fluid">
+                <div class="span2">
+                    <div class="well sidebar-nav">
+                        <ul class="nav nav-list" id="funs">
+                            <li class="nav-header">
+                                功能
+                            </li>
+                            <li function="diags">
+                                <a href="#">Diagnostics</a>
+                            </li>
+                            <li function="apps">
+                                <a href="#">Application</a>
+                            </li>
+                            <li function="conf">
+                                <a href="#">Configuration</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="span10">
+                    <div class="row">
+                        <div class="span8">
+                            <div id="content"></div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="login_form">
+            <form class="form-signin">
+                <h2 class="form-signin-heading">Login DSA Server</h2>
+                <input type="text" class="input-block-level" id="inputAccessPoint" placeholder="AccessPoint" value="http://127.0.0.1:8080/ischool_dsa5/manager">
+                <input type="text" class="input-block-level" id="inputAccount" placeholder="Account" value="admin">
+                <input type="password" class="input-block-level" id="inputPassword" placeholder="Password" value="dsa4admin">
+                <button class="btn btn-large btn-primary" type="button" id="login">
+                    Sign in
+                </button>
+            </form>
+        </div>
+
+        <!-- Templates -->
+        <div id="summary_template" class="hide">
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label">Configuration Name：</label>
+                        <div class="controls">
+                            <input type="text" class="input-xxlarge" id="confName" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">AppDeploy Url：</label>
+                        <div class="controls">
+                            <input type="text" class="input-xxlarge" id="appUrl" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Components Url：</label>
+                        <div class="controls">
+                            <input type="text" class="input-xxlarge" id="comUrl" readonly="readonly">
+                            </input>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Database Version：</label>
+                        <div class="controls">
+                            <input type="text" class="input-xxlarge" id="dbversion" readonly="readonly">
+                            </input>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div id="applications_template" class="hide">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>DSA 名稱</th>
+                        <th>資料庫位置</th>
+                    </tr>
+                </thead>
+                <tbody id="app_rows">
+                    <tr>
+                        <td id="name"></td>
+                        <td id="dburl"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="diagnositcs_template" class="hide">
+            <div class="row-fluid">
+                <button type="button" class="btn btn-primary span3" id="btn_snapmemory" data-loading-text="快照中...">
+                    快照目前記憶體狀態
+                </button>
+                <button type="button" class="btn btn-primary span3" id="btn_snapthread" data-loading-text="快照中...">
+                    快照目前執行緒狀態
+                </button>
+            </div>
+
+            <div id="ctr_status"></div>
+
+        </div>
+        
+        <script src="diagnostics.js"></script>
+    </body>
+</html>
