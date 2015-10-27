@@ -17,6 +17,15 @@ var dsamanager = function() {
 		});
 	};
 
+	var show_task_status = function(container, callback) {
+		$(container).load('diagnostics-task.html', function() {
+			dsadal.get_diagnostics_task(function(rsp, error) {
+				diag.task.applyui(rsp, $('#diagnostics-task'));
+				callback();
+			});
+		});
+	};
+	
 	var current_page = ""; // 一開始會停在 diag 頁。
 
 	return {
@@ -128,6 +137,15 @@ var dsamanager = function() {
 				});
 			});
 
+			// 快照目前 Task 狀態
+			content.find('#btn_snaptask').click(function() {
+				var sender = $(this);
+				sender.button('loading');
+				show_task_status(ctrStatus, function() {
+					sender.button('reset');
+				});
+			});
+			
 			current_page = "diag";
 		}
 	};

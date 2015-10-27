@@ -42,6 +42,13 @@ var dsadal = function() {
 				body : '',
 				result : callback
 			});
+		},
+		get_diagnostics_task : function(callback) {
+			_conn.send({
+				service : "LoadBalance.GetTasksStatus",
+				body : '',
+				result : callback
+			});
 		}
 	};
 }();

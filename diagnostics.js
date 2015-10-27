@@ -96,5 +96,45 @@ var diag = {
 			$(thread_rows).html(thread_data);
 
 		}
+	},
+	task : {
+		applyui : function(rsp, diagui) {
+			$(diagui).find('#currentTimestamp').html(rsp.Response.Result.Timestamp);
+
+			var totalTaskCount = 0, runningTaskCount = 0;
+			var task_rows = $(diagui).find('#tasks');
+			var results = $.makeArray(rsp.Response.Result);
+			var task_data = "";
+
+			$(results).each(function(index, result) {
+				
+				totalTaskCount += parseInt(result.TotalTaskCount);
+				runningTaskCount += parseInt(result.RunningTaskCount);
+				
+				var tasks = result.Task;
+
+				tasks.sort(function(x, y) {
+					return x.Application > y.Application;
+				});
+
+				$(tasks).each(function(index, task) {
+
+					if (task.ThreadID) {
+						task_data += "<tr>";
+						task_data += "<td>" + result.URL + "</td>";
+						task_data += "<td>" + task.ThreadName + "</td>";
+						task_data += "<td>" + task.WaitingTime + "</td>";
+						task_data += "<td>" + task.RunningTime + "</td>";
+						task_data += "</tr>";
+					}
+				});
+			});
+
+			$(diagui).find('#totalTasks').html(totalTaskCount);
+			$(diagui).find('#runningTasks').html(runningTaskCount);
+
+			$(task_rows).html(task_data);
+
+		}
 	}
 };
