@@ -71,30 +71,38 @@ var diag = {
 	},
 	thread : {
 		applyui : function(rsp, diagui) {
-			$(diagui).find('#currentTimestamp').html(rsp.DiagnosticsData.Timestamp);
-
+			
+			$(diagui).find('#currentTimestamp').html(rsp.Response.Result.Timestamp);
+		
 			var thread_rows = $(diagui).find('#threads');
-			var runnings = $.makeArray(rsp.DiagnosticsData.Running);
-
-			runnings.sort(function(x, y) {
-				return x.Application > y.Application;
-			});
+			var results = $.makeArray(rsp.Response.Result);
 
 			var thread_data = "";
-			$(runnings).each(function(index, item) {
-				thread_data += "<tr>";
-				thread_data += "<td>" + item.ThreadName.replace('http-bio-8080-', '') + "</td>";
-				thread_data += "<td>" + item.ThreadState + "</td>";
-				thread_data += "<td>" + item.Service + "</td>";
-				thread_data += "<td>" + item.Application + "</td>";
-				thread_data += "<td>" + item.Contract + "</td>";
-				thread_data += "<td>" + item.IPAddress + "</td>";
-				thread_data += "<td>" + item.UserName + "</td>";
-				thread_data += "<td>" + item.SpendTime + "</td>";
-				thread_data += "</tr>";
-			});
-			$(thread_rows).html(thread_data);
 
+			$(results).each(function(index, result) {
+		
+				var runnings = result.Running;
+				
+				runnings.sort(function(x, y) {
+					return x.Application > y.Application;
+				});
+
+				$(runnings).each(function(index, item) {
+					thread_data += "<tr>";
+					thread_data += "<td>" + item.ThreadName.replace('http-bio-8080-', '') + "</td>";
+					thread_data += "<td>" + item.ThreadState + "</td>";
+					thread_data += "<td>" + item.Service + "</td>";
+					thread_data += "<td>" + item.Application + "</td>";
+					thread_data += "<td>" + item.Contract + "</td>";
+					thread_data += "<td>" + item.IPAddress + "</td>";
+					thread_data += "<td>" + item.UserName + "</td>";
+					thread_data += "<td>" + item.SpendTime + "</td>";
+					thread_data += "</tr>";
+				});
+				
+			});
+			
+			$(thread_rows).html(thread_data);
 		}
 	},
 	task : {

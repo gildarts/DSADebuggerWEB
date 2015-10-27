@@ -38,7 +38,7 @@ var dsadal = function() {
 		},
 		get_diagnostics_thread : function(callback) {
 			_conn.send({
-				service : "Diagnostics.GetThreadsStatus",
+				service : "LoadBalance.GetThreadsStatus",
 				body : '',
 				result : callback
 			});
